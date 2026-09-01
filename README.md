@@ -1,6 +1,6 @@
 # Hi there, I'm Sunisa (Jajaa) 👋
 
-*First-year Digital Business undergraduate student (Transferred from Digital Engineering) at Prince of Songkla University*
+*Second-year Digital Business undergraduate student (Transferred from Digital Engineering) at Prince of Songkla University*
 
 I am passionate about creativity, programming, and design. I enjoy working on both software development and visual design projects. I am constantly eager to learn and improve my skills through real-world applications.
 
@@ -11,11 +11,16 @@ I am passionate about creativity, programming, and design. I enjoy working on bo
 - *Web Development:* HTML, CSS, JavaScript
 - *Database & Backend:* Firebase, SQL
 - *Data Analytics & Visualization:* Power BI, Looker Studio, Microsoft Excel
+- *Version Control & Tools:* Git, GitHub
+- *APIs & Integration:* Google APIs
+- *Design & UI:* Canva
+- *Digital Marketing & E-commerce:* Shopee Affiliate
 
 ## 🚀 Recent Projects & Experience
 - *MYHOLO Web Platform:* Developed a web platform integrating HTML, CSS, JavaScript, and Firebase, featuring real-time chat and search functionalities.
 - *Data Analytics Dashboards:* Created business and logistics dashboards (e.g., NexaSupply Logistics) using Power BI to analyze and visualize data effectively.
-- *Digital Marketing:* Managed digital marketing projects and tracked sales targets via the Shopee Affiliate program.
+- *Digital Marketing:* Managed digital marketing projects and tracked sales targets program.
+- *Digital Marketing:*
 
 ## 📫 How to reach me
 - *Email:* Bome08aa@gmail.com
