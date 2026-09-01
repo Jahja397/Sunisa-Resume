@@ -31,7 +31,7 @@ I am passionate about creativity, programming, and design. I enjoy working on bo
 * **Version Control & Tools:** Git, GitHub (Code management and deployment workflow)
 * **APIs & Integration:** Google APIs (Integrated for platform features)
 * **Design & UI:** Canva (Portfolio design and visual assets)
-* **Digital Marketing & E-commerce:** Shopee Affiliate (Campaign management and commission tracking)
+* **Digital Marketing & E-commerce:** Shopee/Tiktok Affiliate (Campaign management and commission tracking)
   
 ## 🚀 Recent Projects & Experience
 * **MYHOLO Web Platform:** Developed a web platform integrating HTML, CSS, JavaScript, and Firebase, featuring interactive UI and search functionalities.([Live Demo](https://gilded-haupia-cd2c3e.netlify.app/)). 
