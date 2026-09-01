@@ -7,6 +7,9 @@ I am passionate about creativity, programming, and design. I enjoy working on bo
 ## 🔗 Portfolio & Resume
 - *My Portfolio (Canva):* [Click here to view my design and project portfolio](https://www.canva.com/design/DAGN6NtKX-0/hnFbkdXK1uA01uWALVPZEw/edit?utm_content=DAGN6NtKX-0&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
+## 🏆 Certificates & Credentials
+- **Certificates Collection:** [View Google Drive Folder](https://drive.google.com/drive/u/0/mobile/folders/1wZNvLZmOl-eBVglkMMwi9MnPEX5I3cre)
+
 ## 📊 Data Visualization & Analytics
 - **Dashboard Project 1:** [View Canva Presentation](https://canva.link/oxlbt9uj3kdi3q7)
 - **Dashboard Project 2:** [View Canva Presentation](https://canva.link/6fy2nv7gsf1whth)
