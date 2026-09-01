@@ -31,10 +31,11 @@ I am passionate about creativity, programming, and design. I enjoy working on bo
 * **Digital Marketing & E-commerce:** Shopee Affiliate (Campaign management and commission tracking)
   
 ## 🚀 Recent Projects & Experience
-- *MYHOLO Web Platform:* Developed a web platform integrating HTML, CSS, JavaScript, and Firebase, featuring real-time chat and search functionalities.
-- *Data Analytics Dashboards:* Created business and logistics dashboards (e.g., NexaSupply Logistics) using Power BI to analyze and visualize data effectively.
-- *Digital Marketing:* Managed digital marketing projects and tracked sales targets program.
-- *Digital Marketing:*
+* **MYHOLO Web Platform:** Developed a web platform integrating HTML, CSS, JavaScript, and Firebase, featuring interactive UI and search functionalities.([Live Demo](https://gilded-haupia-cd2c3e.netlify.app/)). 
+* **Interconnect Web Platform:** Developed a full-stack real-time chat application featuring Global Chat, Channels, Direct Messaging, User Authentication, and Profile Color Customization ([Live Demo](https://bucolic-genie-6977df.netlify.app/)).
+* **Data Analytics Dashboards:** Created business and logistics dashboards (e.g., NexaSupply Logistics) using Power BI and Looker Studio to analyze and visualize data effectively.
+* **Chatbot & Automation:** Developed a LINE Chatbot project including model workflows and system designs.
+* **Digital Marketing & E-commerce:** Managed digital marketing projects through the Shopee Affiliate program and tracked sales targets.
 
 ## 📫 How to reach me
 - *Email:* Bome08aa@gmail.com
