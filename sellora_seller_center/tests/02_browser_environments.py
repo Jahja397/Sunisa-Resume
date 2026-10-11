@@ -1,0 +1,77 @@
+# Part of the Sellora test suite. Needs: pip install playwright pillow  and  python -m playwright install chromium
+import os as _os, pathlib as _pl
+HERE=_os.path.dirname(_os.path.abspath(__file__)); _os.chdir(HERE); _os.makedirs('shots',exist_ok=True)
+APP=_os.path.abspath(_os.path.join(HERE,'..','Sellora_Seller_Center.html')); APP_URL=_pl.Path(APP).as_uri()
+import re,hashlib,json
+from playwright.sync_api import sync_playwright
+URL=APP_URL; R=[]
+def check(n,c,i=''): R.append(bool(c)); print(('PASS ' if c else 'FAIL ')+n+(' | '+str(i) if i else ''))
+def signup(pg,em='a@mail.com',pw='secret12',tap=False):
+    pg.fill('#l-name','Sunisa'); pg.fill('#l-email',em); pg.fill('#l-pass',pw)
+    (pg.tap if tap else pg.click)('#lf button[type=submit]'); pg.wait_for_timeout(350)
+with sync_playwright() as p:
+    b=p.chromium.launch()
+    # a) storage completely blocked (private mode / cookies off / sandboxed in-app view)
+    ctx=b.new_context(); ctx.add_init_script(script="Object.defineProperty(window,'localStorage',{get(){throw new DOMException('denied','SecurityError')}})")
+    pg=ctx.new_page(); errs=[]; pg.on('pageerror',lambda e:errs.append(str(e))); pg.goto(URL); pg.wait_for_timeout(300)
+    check('storage blocked: login page warns', 'cannot save data' in pg.inner_text('#lf'))
+    signup(pg); pg.click('[data-act=sample]'); pg.wait_for_timeout(300)
+    check('storage blocked: app still works (sign up + sample data)', 'Sunisa' in pg.inner_text('main h1') and pg.query_selector('#monthly') is not None)
+    check('storage blocked: banner shown inside the app', pg.query_selector('.memwarn') is not None)
+    for x in ['orders','analytics','settings']: pg.click(f'.navb[data-p={x}]'); pg.wait_for_timeout(100)
+    check('storage blocked: no errors', not errs, errs[:1]); ctx.close()
+    # b) no Web Crypto (plain http) and no TextEncoder (old Edge)
+    ctx=b.new_context(); ctx.add_init_script(script="Object.defineProperty(window.crypto,'subtle',{value:undefined});delete window.TextEncoder;window.TextEncoder=undefined")
+    pg=ctx.new_page(); errs=[]; pg.on('pageerror',lambda e:errs.append(str(e))); pg.goto(URL); pg.wait_for_timeout(300)
+    signup(pg,'thai@mail.com','รหัสลับ123')
+    h=pg.evaluate("JSON.parse(localStorage.getItem('sellora-accounts'))['thai@mail.com'].hash")
+    check('no crypto.subtle/TextEncoder: same SHA-256 as a real browser (Thai password)', h==hashlib.sha256('sellora:รหัสลับ123'.encode()).hexdigest())
+    pg.click('[data-act=prof]'); pg.click('[data-act=logout]'); pg.wait_for_timeout(200)
+    pg.fill('#l-email','thai@mail.com'); pg.fill('#l-pass','รหัสลับ123'); pg.click('#lf button[type=submit]'); pg.wait_for_timeout(350)
+    check('no crypto.subtle/TextEncoder: log in again works', 'Sunisa' in pg.inner_text('main h1') and not errs, errs[:1]); ctx.close()
+    # c) LINE in-app browser on iPhone, real taps
+    ua='Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 Safari Line/14.9.0'
+    ctx=b.new_context(user_agent=ua,viewport={'width':390,'height':844},is_mobile=True,has_touch=True); pg=ctx.new_page(); errs=[]; pg.on('pageerror',lambda e:errs.append(str(e)))
+    pg.goto(URL); pg.wait_for_timeout(300)
+    check('LINE browser: friendly note on login', 'inside the LINE app' in pg.inner_text('#lf'))
+    signup(pg,tap=True); pg.tap('[data-act=sample]'); pg.wait_for_timeout(300)
+    pg.tap('[data-act=bell]'); pg.wait_for_timeout(150); opened=pg.evaluate("document.getElementById('dd').innerHTML!==''"); pg.touchscreen.tap(195,780); pg.wait_for_timeout(150)
+    check('tap: tapping the page closes the notification menu', opened and pg.evaluate("document.getElementById('dd').innerHTML===''"))
+    pg.tap('main [data-act=addOrder]'); pg.wait_for_timeout(250); pg.tap('.scrim',position={'x':195,'y':838}); pg.wait_for_timeout(200)
+    check('tap: tapping the dark backdrop closes a form', pg.query_selector('#of') is None)
+    pg.tap('[data-act=openNav]'); pg.wait_for_timeout(250); pg.tap('.veil',position={'x':360,'y':400}); pg.wait_for_timeout(250)
+    check('tap: tapping beside the side menu closes it', pg.evaluate("!document.body.classList.contains('nav-open')"))
+    check('LINE browser: no errors', not errs, errs[:1]); ctx.close()
+    # d) a browser that cannot run the app script (e.g. Internet Explorer): simulate by breaking the main script
+    html=open(APP,encoding='utf-8').read().replace("(function(){\n'use strict';","(function(){\n'use strict';\nconst x=@@;",1)
+    ctx=b.new_context(); pg=ctx.new_page(); pg.route('**/old.html',lambda r:r.fulfill(body=html,content_type='text/html; charset=utf-8'))
+    pg.goto('file:///old.html'); pg.wait_for_timeout(300)
+    check('too-old browser: shows a clear message instead of a blank page', "can't run Sellora" in pg.inner_text('body')); ctx.close()
+    # e) JavaScript turned off / file preview apps
+    ctx=b.new_context(java_script_enabled=False); pg=ctx.new_page(); pg.goto(URL); pg.wait_for_timeout(300)
+    check('JavaScript off: explains what to do (EN + TH)', 'needs JavaScript' in pg.inner_text('body') and 'กรุณาเปิดด้วยเบราว์เซอร์' in pg.inner_text('body')); ctx.close()
+    # f) backup -> new browser -> restore
+    ctx=b.new_context(accept_downloads=True); pg=ctx.new_page(); errs=[]; pg.on('pageerror',lambda e:errs.append(str(e))); pg.goto(URL); pg.wait_for_timeout(300)
+    signup(pg,'shop@mail.com'); pg.click('[data-act=sample]'); pg.wait_for_timeout(300); pg.click('.navb[data-p=settings]')
+    with pg.expect_download() as dl: pg.click('[data-act=backup]')
+    path='backup.json'; dl.value.save_as(path); bk=json.load(open(path))
+    check('backup: file downloaded with all orders', bk['app']=='sellora' and len(bk['data']['orders'])==bk['data']['lastOrderId']-10000>1000, dl.value.suggested_filename)
+    check('backup: does not contain the password hash', 'account' not in bk['data'] and 'hash' not in json.dumps(bk['data'])[:0]+('' if 'account' not in bk['data'] else 'x'))
+    ctx.close()
+    ctx=b.new_context(); pg=ctx.new_page(); errs=[]; pg.on('pageerror',lambda e:errs.append(str(e))); pg.goto(URL); pg.wait_for_timeout(300)
+    signup(pg,'other@mail.com'); pg.click('.navb[data-p=settings]'); pg.click('[data-act=restore]'); pg.wait_for_timeout(150)
+    pg.fill('#rs-text','{"hello":1}'); pg.click('#rsf button[type=submit]'); pg.wait_for_timeout(150)
+    check('restore: rejects text that is not a backup', 'not a Sellora backup' in pg.inner_text('#rs-err'))
+    pg.set_input_files('#rs-file',path); pg.wait_for_timeout(300); pg.click('#rsf button[type=submit]'); pg.wait_for_timeout(400)
+    check('restore: other browser now has the whole store', 'Backup restored' in pg.inner_text('#toast') and pg.evaluate("JSON.parse(localStorage.getItem('sellora-d-other@mail.com')).orders.length")==len(bk['data']['orders']))
+    check('restore: still logged in as the same account', pg.evaluate("JSON.parse(localStorage.getItem('sellora-d-other@mail.com')).account.email")=='other@mail.com')
+    check('backup/restore: no errors', not errs, errs[:1])
+    # g) dark mode select arrows + no page errors on every page in dark mode
+    pg.click('[data-act=theme]'); pg.wait_for_timeout(100)
+    for x in ['dashboard','orders','marketing','analytics']: pg.click(f'.navb[data-p={x}]'); pg.wait_for_timeout(100)
+    pg.goto(URL+'#orders'); pg.wait_for_timeout(300); pg.click('main [data-act=addOrder]'); pg.wait_for_timeout(200)
+    sel=pg.evaluate("getComputedStyle(document.querySelector('#o-cust')).backgroundImage")
+    check('dark mode: custom select arrow uses the light colour', '8fc4d0' in sel); 
+    pg.screenshot(path='shots/dark-form.png'); ctx.close()
+    b.close()
+print(f'\n{sum(R)}/{len(R)} passed')
