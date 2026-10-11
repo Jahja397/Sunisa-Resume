@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="theme-color" content="#0a1b38">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Shop Ledger Plus – บัญชีร้านค้า</title>
+<script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header><div class="wrap"><div class="brand"><div class="logo">🏪</div><div><h1><span data-i="appname">บัญชีร้านค้า</span> <span class="gold">Shop Ledger</span></h1><small data-i="sub">จัดการการเงินร้านค้า • เห็นภาพรวม • เติบโตอย่างมั่นคง</small></div></div><div style="display:flex;gap:8px;align-items:center"><div class="lgp"><button id="lg"></button></div><button class="theme" id="cld" title="cloud" onclick="go(2);sub='bk';R2()" style="font-size:1.1rem">☁️</button><button class="theme" id="th">🌓</button></div></div></header>
+<div class="wrap" id="pg1">
+  <div class="hero"><div class="hico">💰</div><div><div class="lbl" id="plbl">กำไร</div><div class="big" id="profit">฿0</div></div><div class="htag"><span data-i="tag">เริ่มต้นวันใหม่ด้วยยอดขายที่ดีกว่า</span><span style="font-size:2.2rem;color:var(--gold)">📈</span></div></div>
+  <div id="demobar" style="display:none"></div>
+  <div class="grid">
+    <div class="kc"><div class="kic kg">🪙</div><div><span class="lbl" data-i="income">รายรับ</span><b class="pos" id="inc">฿0</b><small id="dinc"></small></div></div>
+    <div class="kc"><div class="kic r">👛</div><div><span class="lbl" data-i="expense">รายจ่าย</span><b class="neg" id="exp">฿0</b><small id="dexp"></small></div></div>
+  </div>
+  <div class="dash"><div class="card cmain"><h2 id="ctitle">📊</h2><div class="tabs" id="tabs"><button data-p="day" class="on" data-i="p_day">วันนี้</button><button data-p="month" data-i="p_month">เดือนนี้</button><button data-p="year" data-i="p_year">ปีนี้</button></div><div class="cin"><div class="ctog" id="ctog"><button data-c="bar" class="on" data-i="bar">📊 กราฟแท่ง</button><button data-c="line" data-i="line">📈 กราฟเส้น</button></div><div class="mnav" id="mnav"><button id="mprev">◀</button><select id="msel"></select><select id="ysel"></select><button id="mnext">▶</button><button id="mnow" class="rst" data-i="p_month">เดือนนี้</button></div><div class="s" id="mnote" style="display:none;margin:-4px 0 8px"></div><div class="tip" id="tip"></div><div class="cwrap"><div class="yax" id="yax"></div><div class="scroll" id="scroll"><div id="inner"><div class="plot" id="chart"></div><div class="xlab" id="xlab"></div></div></div></div><div class="legend"><span class="pos">■</span> <span data-i="income">รายรับ</span> &nbsp; <span class="neg">■</span> <span data-i="expense">รายจ่าย</span> &nbsp; <span class="gd">■</span> <span data-i="profitw">กำไร</span></div></div></div><div class="card dn" id="dn"></div></div>
+  <div class="banner"><span class="crown">👑</span><div><b data-i="mission">พันธกิจของเรา</b><span data-i="missiontx">ช่วยให้ธุรกิจรายเล็ก ๆ เติบโตได้อย่างมั่นคง ด้วยเครื่องมือการจัดการที่ใช้งานง่าย</span></div></div>
+  <h2 id="ltitle">📋 รายการ</h2>
+  <div class="card" id="list"></div>
+</div>
+<div class="wrap" id="pg2" style="display:none;margin-top:0;padding-top:30px"><div id="p2"></div></div>
+<nav id="bnav"></nav><div id="psheet"></div>
+<button class="fab" id="add" data-i="add">＋ เพิ่มรายการ</button>
+
+<div class="modal" id="modal"><div class="sheet">
+  <div class="seg"><button class="in on" data-t="in" data-i="income">รายรับ</button><button class="out" data-t="out" data-i="expense">รายจ่าย</button></div>
+  <label data-i="amount">จำนวนเงิน (บาท)</label><input id="amt" type="text" inputmode="decimal" placeholder="0">
+  <label data-i="category">หมวดหมู่ (พิมพ์เองหรือเลือกจากรายการได้)</label><input id="cat" list="catlist" data-ph="catph" placeholder="เช่น ขายหน้าร้าน" autocomplete="off"><datalist id="catlist"></datalist>
+  <label data-i="note">โน้ต (ไม่บังคับ)</label><input id="note" data-ph="noteph" placeholder="เช่น ลูกค้าประจำ">
+  <label data-i="date">วันที่</label><input id="date" type="date">
+  <button class="save" id="save" data-i="save">บันทึก</button><button class="cancel" id="cancel" data-i="cancel">ยกเลิก</button>
+</div></div>
+
+<script src="js/01-config-i18n.js"></script>
+<script src="js/02-state-utils.js"></script>
+<script src="js/03-main-view.js"></script>
+<script src="js/04-chart-lang-month.js"></script>
+<script src="js/05-extras-core.js"></script>
+<script src="js/06-extras-actions.js"></script>
+<script src="js/07-extras-views.js"></script>
+<script src="js/08-dashboards.js"></script>
+<script src="js/09-typed-sale-link.js"></script>
+<script src="js/10-demo-data.js"></script>
+<script src="js/11-start-modes.js"></script>
+<script src="js/12-cloud-sync.js"></script>
+<script src="js/13-backup-files.js"></script>
+<script src="js/14-recover-boot.js"></script>
+<script src="js/15-edit-entries.js"></script>
+<script src="js/16-credit.js"></script>
+</body>
+</html>
