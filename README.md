@@ -15,7 +15,7 @@ I am passionate about creativity, programming, and design. I enjoy working on bo
 - **Dashboard Project 2:** [View Canva Presentation](https://canva.link/6fy2nv7gsf1whth)
 
 ## 🤝 Community & Volunteer Work
-- **Volunteer Project Gallery (1):** [View Canva Presentation](https://canva.link/ygwj8tkkjr1b53ody)
+- **Volunteer Project Gallery (1):** [View Canva Presentation][https://canva.link/ygwj8tkkjr1b53ody](https://canva.link/mjcx70yk4atb35g)
 - **Volunteer Project Gallery (2):** [View Canva Presentation](https://canva.link/0umeclgb212usse)
 - **Project Registration / Form:** [Google Form Link](https://docs.google.com/forms/d/e/1FAIpQLSdCYlyZ2Sy1cAJs1dtg3tiztp0ogZcgTvvkHRFFdFlWLWyUoA/viewform)
   
